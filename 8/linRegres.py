@@ -1,4 +1,5 @@
  # encoding: utf-8
+ #线性回归
 from numpy import *;
 import matplotlib.pyplot as p;
 
