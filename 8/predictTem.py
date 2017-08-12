@@ -43,7 +43,8 @@ def ridgeRegres(numIter = 10):
 			errorMat[i,j] = rr.squareError(ypredictMat[:,j],ytest);
 	#找到平均误差最小的w
 	meanError = np.mat(np.mean(errorMat,0));
-	index = np.argsort(meanError,1)[0,0];
+	index = np.argmin(meanError,1)[0,0]; 
+	#index = np.argsort(meanError,1)[0,0];
 	bestw = wMat[index,:];
 	#w还原以和线性回归的w进行比较
 	meanX = np.mean(X,0);
