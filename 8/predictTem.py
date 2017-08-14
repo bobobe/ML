@@ -23,8 +23,10 @@ def ridgeRegres(numIter = 10):
 	for i in range(numIter):
 		X1 = X.copy();
 		y1 = y.copy();
-		np.random.shuffle(X1);
-		np.random.shuffle(y1);
+		index = range(m);
+		np.random.shuffle(index);#打乱
+		X1 = X1[index,:]
+		y1 = y1[index,:];
 		xtrain = X1[0:int(m*0.9),:];
 		ytrain = y1[0:int(m*0.9),:];
 		xtest = X1[int(m*0.9):,:];
