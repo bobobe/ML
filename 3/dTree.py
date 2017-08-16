@@ -2,7 +2,19 @@
 #决策树
 import numpy as np;
 from scipy.stats import mode;
+import matplotlib.pyplot as plt;
 
+#设置字体以显示中文
+def conf_zh(font_name):
+    from pylab import mpl
+    mpl.rcParams['font.sans-serif'] = [font_name]
+    mpl.rcParams['axes.unicode_minus'] = False
+
+#树节点格式的全局变量
+decisionNode = dict(boxstyle = "sawtooth",fc="0.8");
+leafNode = dict(boxstyle = "round4",fc = "0.8");
+arrow_args = dict(arrowstyle = "<-");
+	
 def calcEntro(y):#compute the entropy
 	m,n = np.shape(y);
 	typeDic = {};
@@ -75,14 +87,27 @@ def createTree(X,y,labels):#create the dicide tree(labels is the description of 
 		myTree[splitFeature][v] = createTree(splitX,splitY,subLabels);
 	return myTree;
 	
+def plotNode(nodeTxt,centerPt,parentPt,nodeType,ax):
+	ax.annotate(nodeTxt,xy = parentPt,xycoords = 'axes fraction',\
+	xytext = centerPt,textcoords = 'axes fraction',va = 'center',ha = 'center',bbox=nodeType,\
+	arrowprops = arrow_args);
+	
+	
+def treePlotter():
+	fig = plt.figure(facecolor ='white');#画板背景色
+	fig.clf();#清除当前图像窗口
+	ax= plt.subplot(111,frameon = False);#
+	plotNode(U'决策节点',(0.5,0.1),(0.1,0.5),decisionNode,ax);
+	plotNode(U'叶节点',(0.8,0.1),(0.3,0.8),leafNode,ax);
+	plt.show();
+
 	
 if __name__=='__main__':
-	X = np.array([[1,1],[1,1],[1,0],[0,1],[0,1]]);
+	conf_zh('Droid Sans Fallback');#
+	#test create decideTree
+	'''X = np.array([[1,1],[1,1],[1,0],[0,1],[0,1]]);
 	y = np.array([[1],[1],[0],[0],[0]]);
-	'''x1,y1= splitDataSet(X,y,0,1);
-	print x1;
-	print y1;'''
-	#print chooseBestFeatureToSplit(X,y);
-	#print majorityCnt(y);
 	labels = ['no sur','flip'];
-	print createTree(X,y,labels);
+	print createTree(X,y,labels);'''
+	#test plot decideTree
+	treePlotter();
