@@ -92,7 +92,34 @@ def plotNode(nodeTxt,centerPt,parentPt,nodeType,ax):
 	xytext = centerPt,textcoords = 'axes fraction',va = 'center',ha = 'center',bbox=nodeType,\
 	arrowprops = arrow_args);
 	
+def getNumLeafs(myTree):#获取树的叶子节点数目(非递归)
+	leafNum = 0;
+	nodeList = [];
+	nodeList.append(myTree.values()[0]);
+	while(len(nodeList)!=0):#层序遍历
+		nodeValue = nodeList[0];
+		del nodeList[0];
+		for nValue in nodeValue.values():
+			#print type(nValue);
+			if(type(nValue) != dict):
+				leafNum += 1;
+			else:
+				nodeList.append(nValue);
+	return leafNum;
 	
+
+def getTreeDepth(myTree):#获取树的深度(递归)
+	if(type(myTree) != dict):
+		return 0;
+	nodeDepth = {};
+	for node in myTree.keys():
+		nodeDepth[node] = getTreeDepth(myTree[node])+1;
+	maxDep = 0;
+	for nd in nodeDepth.values():
+		if(nd >maxDep):
+			maxDep = nd;
+	return maxDep;
+
 def treePlotter():
 	fig = plt.figure(facecolor ='white');#画板背景色
 	fig.clf();#清除当前图像窗口
@@ -100,14 +127,19 @@ def treePlotter():
 	plotNode(U'决策节点',(0.5,0.1),(0.1,0.5),decisionNode,ax);
 	plotNode(U'叶节点',(0.8,0.1),(0.3,0.8),leafNode,ax);
 	plt.show();
-
 	
 if __name__=='__main__':
-	conf_zh('Droid Sans Fallback');#
+	conf_zh('Droid Sans Fallback');#解决绘制时界面的中文显示问题
 	#test create decideTree
-	'''X = np.array([[1,1],[1,1],[1,0],[0,1],[0,1]]);
+	X = np.array([[1,1],[1,1],[1,0],[0,1],[0,1]]);
 	y = np.array([[1],[1],[0],[0],[0]]);
 	labels = ['no sur','flip'];
-	print createTree(X,y,labels);'''
+	t = createTree(X,y,labels);
+	print t;
 	#test plot decideTree
-	treePlotter();
+	'''treePlotter();'''
+	#depth
+	print 'the deepth of the dtree is: '+str(getTreeDepth(t));
+	#leafNum
+	print 'the leaf number of the dtree is: '+str(getNumLeafs(t));
+	
