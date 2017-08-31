@@ -110,21 +110,36 @@ def getTreeDepth(myTree):#获取树的深度-1(递归)
 			maxDep = thisDep;
 	return maxDep;
 
+#分类
+def classify(inputTree,labels,testPt):
+	thisLabel = inputTree.keys()[0];
+	thisDict = inputTree[thisLabel];
+	thisValue = testPt[labels.index(thisLabel)];
+	if type(thisDict[thisValue])==dict:
+		return classify(thisDict[thisValue],labels,testPt);
+	else:
+		return str(thisDict[thisValue]);
+	
+
 	
 if __name__=='__main__':
 	#test create decideTree
-	'''X = np.array([[1,1],[1,1],[1,0],[0,1],[0,1]]);
+	X = np.array([[1,1],[1,1],[1,0],[0,1],[0,1]]);
 	y = np.array([[1],[1],[0],[0],[0]]);
 	labels = ['no sur','flip'];
 	t = createTree(X,y,labels);
-	print t;'''
-	X = np.array([[1,2,3],[1,1,2],[1,3,1],[2,1,1],[2,2,1]]);
+	print t;
+	'''X = np.array([[1,2,3],[1,1,2],[1,3,1],[2,1,1],[2,2,1]]);
 	y = np.array([[1],[0],[0],[0],[1]]);
 	labels = ['no sur','flip','test'];
 	t = createTree(X,y,labels);
-	print t;
+	print t;'''
 	#depth
 	print 'the deepth of the dtree is: '+str(getTreeDepth(t));
 	#leafNum
 	print 'the leaf number of the dtree is: '+str(getNumLeafs(t));
+	#classfiy
+	testPt = [1,0];
+	labels = ['no sur','flip'];
+	print 'the class of the testPt is: '+classify(t,labels,testPt);#
 	
