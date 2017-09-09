@@ -3,6 +3,7 @@
 import numpy as np;
 from scipy.stats import mode;
 import matplotlib.pyplot as plt;
+import pickle as pl;
 
 #设置字体以显示中文
 def conf_zh(font_name):
@@ -119,7 +120,17 @@ def classify(inputTree,labels,testPt):
 		return classify(thisDict[thisValue],labels,testPt);
 	else:
 		return str(thisDict[thisValue]);
-	
+
+#序列化后存储树
+def storeTree(inputTree,filename):
+	f = open(filename,'w');
+	pl.dump(inputTree,f);
+	f.close();
+
+#从文件读取得到树
+def getTree(filename):
+	f = open(filename);
+	return pl.load(f);
 
 	
 if __name__=='__main__':
@@ -128,6 +139,9 @@ if __name__=='__main__':
 	y = np.array([[1],[1],[0],[0],[0]]);
 	labels = ['no sur','flip'];
 	t = createTree(X,y,labels);
+	#store Tree
+	storeTree(t,'tree.txt');
+	t = getTree('tree.txt');
 	print t;
 	'''X = np.array([[1,2,3],[1,1,2],[1,3,1],[2,1,1],[2,2,1]]);
 	y = np.array([[1],[0],[0],[0],[1]]);
@@ -141,5 +155,5 @@ if __name__=='__main__':
 	#classfiy
 	testPt = [1,0];
 	labels = ['no sur','flip'];
-	print 'the class of the testPt is: '+classify(t,labels,testPt);#
+	print 'the class of the testPt is: '+classify(t,labels,testPt);
 	
